@@ -8,7 +8,7 @@ spec:
     server: "https://kubernetes.default.svc"
   project: default
   source: 
-    path: sample
+    path: file
     repoURL: "https://github.com/varunaroratest/argo-demoproject"
     targetRevision: HEAD
     directory:
