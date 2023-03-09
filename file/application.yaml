@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata: 
+  name: application
+spec:
+  destination:
+    namespace: application
+    server: "https://kubernetes.default.svc"
+  project: default
+  source: 
+    path: file
+    repoURL: "https://github.com/varunaroratest/argo-demoproject"
+    targetRevision: HEAD
+    directory:
+      recurse: true
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true
+    syncOptions:
+      - CreateNamespace=true
