@@ -16,3 +16,8 @@ spec:
       - image: nginx:1.14.2
         imagePullPolicy: IfNotPresent
         name: nginx
+      destination:
+        server: https://kubernetes.default.svc
+      source:
+        repoURL: https://github.com/varunaroratest/argo-demoproject
+        targetRevision: HEAD
