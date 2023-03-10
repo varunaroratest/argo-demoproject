@@ -7,6 +7,13 @@ metadata:
 spec:
   replicas: 3
   revisionHistoryLimit: 1
+  project: default
+  source: 
+    path: file
+    repoURL: "https://github.com/varunaroratest/argo-demoproject"
+    targetRevision: HEAD
+    directory:
+      recurse: true
   selector:
     matchLabels:
       app: bluegreen-demo
