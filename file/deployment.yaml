@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: web-app
+  name: blue-Deployment
 spec:
-  replicas: 5
+  replicas: 2
   selector:
     matchLabels:
-      app: web-app
+      app: blue-Deployment
   template:
     metadata:
       labels:
-        app: web-app
+        app: blue-Deployment
     spec:
       containers:
       - image: nginx:1.14.2
