@@ -6,11 +6,11 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app: blue-Deployment
+      name: blue-Deployment
   template:
     metadata:
       labels:
-        app: blue-Deployment
+        name: blue-Deployment
     spec:
       containers:
       - image: nginx:1.14.2
