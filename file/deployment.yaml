@@ -16,3 +16,7 @@ spec:
       - image: nginx:1.14.2
         imagePullPolicy: IfNotPresent
         name: nginx
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
