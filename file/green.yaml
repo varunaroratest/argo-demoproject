@@ -1,0 +1,14 @@
+apiVersion: apps/v1
+kind: Service
+metadata:
+  name: green-Deployment
+  labels:
+    name: green-Deployment
+spec:
+  ports:
+  - port: 80
+    targetPort: http
+    protocol: TCP
+  selector:
+    name: green-Deployment
+  type: NodePort
