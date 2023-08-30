@@ -10,5 +10,10 @@ jobs:
 
     steps:
       - name: turnstyle
-        uses: varunaroratest/turnstyle@v1.1.1
+        uses: varunaroratest/turnstyle@v1.1.2
+      - name: shell
+        run: |
+          echo "Hi my name is shaif"
+          touch file1.txt
+          
         
