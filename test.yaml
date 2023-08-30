@@ -1,0 +1,14 @@
+name: test
+on:
+  push:
+    branchs: [main]
+
+jobs:
+  build:
+    name: change
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: turnstyle
+        uses: varunaroratest/turnstyle@v1.1.1
+        
