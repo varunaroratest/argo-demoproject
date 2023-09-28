@@ -32,7 +32,7 @@ jobs:
       - name: Post to a Slack channel  
         uses: MeilCli/slack-upload-file@v3
         with:
-          slack_token: ${{ secrets.RELEASE_TRAIN_SLACK_BOT_TOKEN }}
+          slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
           channel_id: C05U7HVABUM
           file_path: "${{ steps.read_file.outputs.fileName }}"
           file_name: 'data.txt' 
