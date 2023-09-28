@@ -24,7 +24,7 @@ jobs:
       # - name: Post to a Slack channel
       #   uses: peter-evans/slack-file-upload@v2.4.0
       #   with:
-      #     channel-id: C05NNTPRZC7
+      #     channel-id: C05U7HVABUM
       #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}          
       #     file_path: "${{ steps.read_file.outputs.fileName }}"
       #     initial_comment: "Here is the file you requested!"
@@ -33,7 +33,7 @@ jobs:
         uses: MeilCli/slack-upload-file@v3
         with:
           slack_token: ${{ secrets.RELEASE_TRAIN_SLACK_BOT_TOKEN }}
-          channel_id: C05NNTPRZC7
+          channel_id: C05U7HVABUM
           file_path: "${{ steps.read_file.outputs.fileName }}"
           file_name: 'data.txt' 
           initial_comment: 'post by slack-upload-file'
