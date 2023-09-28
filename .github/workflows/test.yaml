@@ -25,7 +25,7 @@ jobs:
       #   uses: peter-evans/slack-file-upload@v2.4.0
       #   with:
       #     channel-id: C05NNTPRZC7
-      #     SLACK_BOT_TOKEN: ${{ secrets.RELEASE_TRAIN_SLACK_BOT_TOKEN }}          
+      #     SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}          
       #     file_path: "${{ steps.read_file.outputs.fileName }}"
       #     initial_comment: "Here is the file you requested!"
 
