@@ -1,19 +1,56 @@
-name: test
+name: Publish Version
+
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:      
+
+env:
+  slack_message: "Read GroupSet output:\nBelow components have groupset group-one\nalchemy-costquote\nalchemy-costquote-hosted-jobs\nbid-quote-document-record-consumer\nbid-quote-lane-response-consumer\ncarrier-commitments\ncarrier-microservice\ncarrier-microservice-consumer\ncarrier-microservice-publisher\ncarrierrisk\ncontact-import-service\ncontacts-import-service-consumer\ncrm\ncrm-contacts\ncrm-contacts-carriers-consumer\ncrm-contacts-customers-consumer\ncrm-contacts-facilities-consumer\ncrm-interactions\ncrm-interactions-outbox-producer\ncrm-opportunities-microservice\ncustomer-commitments\ncustomer-commitments-hosted-jobs\ncustomer-commitments-kafka-producer\ncustomer-commitments-seer-consumer\ncustomer-default\ncustomer-default-event-publisher\ncustomer-microservice\ncustomer-microservice-consumer\ncustomer-microservice-publisher\ndata-exchange-scheduler\ndata-upload\ndocmosis\ndocument-generation\ndocument-generation-engine\ndocument-integration\ndocument-processing-engine\ndocuments-storage\nedi\nedi-notification\nedi-processor\nediload\nedimessage\nemployee-microservice\nemployee-microservice-publisher\nflat-file-process-scheduler\nflatfile-event-validation-consumer\nflatfile-rm-validation-response-consumer\nflatfile-service\nhayk-data-seeding\nhayk-rules-engine-flows-accounting-advances\nhayk-rules-engine-flows-accounting-auto-invoice\nhayk-rules-engine-flows-blume-file-monitoring\nhayk-rules-engine-flows-booking-hrhv\nhayk-rules-engine-flows-bounce\nhayk-rules-engine-flows-carrier-accepted-tender-plan\nhayk-rules-engine-flows-carrier-declined-tender-plan\nhayk-rules-engine-flows-carrier-tendered-plan\nhayk-rules-engine-flows-data-upload-success\nhayk-rules-engine-flows-data-upload-unknown-error\nhayk-rules-engine-flows-edi204-cancel\nhayk-rules-engine-flows-edi204-original-success\nhayk-rules-engine-flows-edi214-orderful-success\nhayk-rules-engine-flows-load-notification\nhayk-rules-engine-flows-route-stopexecution\nhayk-rules-engine-flows-tender-plan-booked\nhayk-rules-engine-flows-tender-plan-exhausted\nhayk-rules-engine-flows-tender-plan-started\nhayk-rules-engine-flows-timeline-kafka\nhayk-rules-engine-flows-tracking-eta-past-appt\nhayk-rules-engine-flows-tracking-update\nhayk-rules-engine-flows-truck-matching\nhayk-rules-engine-hayk-api\nhayk-rules-engine-notifications-consumer\nimdl-event-consumer\nimdl-event-publisher\nimdl-import\nimdl-microservice\nimdl-service\nlane-import-service\nload-audit\nmass-uploads-bl-process-scheduler\nmass-uploads-bl-rm-validation-response-consumer\nmass-uploads-bl-validation-consumer\nmass-uploads-bq-capacity-status-consumer\nmass-uploads-bq-commitments-status-consumer\nmass-uploads-bq-process-scheduler\nmass-uploads-bq-rm-validation-response-consumer\nmass-uploads-bq-upload-status-consumer\nmass-uploads-bq-validation-consumer\nmass-uploads-customer-capacity-upload-status-consumer\nmass-uploads-customer-commitments-status-consumer\nmass-uploads-rate-quote-upload-status-consumer\nmass-uploads-rg-process-scheduler\nmass-uploads-rg-rm-validation-response-consumer\nmass-uploads-rg-validation-consumer\nmass-uploads-rq-process-scheduler\nmass-uploads-rq-rm-validation-response-consumer\nmass-uploads-rq-validation-consumer\nmass-uploads-sp-process-scheduler\nmass-uploads-sp-validation-consumer\nmass-uploads-validation-service\nmaster-bid\nmastery-credit\nminion-portal\noffers\noffers-consumer-topic-carriers\noffers-consumer-topic-customers\noffers-consumer-topic-offers\noffers-consumer-topic-orders\noffers-consumer-topic-routes\noffers-consumer-topic-stops\noffers-publisher\npricing\nproject\nrate-quote-document-record-consumer\nrate-quote-lane-response-consumer\nratequote\nratequote-hosted-jobs\nrecord-management-db-migrations\nrecord-management-event-publisher\nregion\nregions-v2-api\nregions-v2-hosted-jobs\nrm-validations\nrm-validations-consumer\nrmis-integration\nrouting-guide-upload-status-consumer\nsaved-filters\nseer-v2-carrier-v2-consumer\nseer-v2-crm-interactions-v0-con\nseer-v2-customer-v1-consumer\nseer-v2-driver-assignment-v2-consumer\nseer-v2-driver-v4-consumer\nseer-v2-gql-api\nseer-v2-match-requests-v1-consumer\nseer-v2-power-v4-consumer\nseer-v2-trailer-v4-consumer\nservice-profile-upload\nservice-profile-upload-hosted-jobs\nslack-api-service\nslack-consumer-service\nslack-sync-service\nsmc3-microservice-gql-api\n"
 
 jobs:
   build:
-    name: change
     runs-on: ubuntu-latest
-
-    steps:
-      - name: turnstyle
-        uses: varunaroratest/turnstyle@v1.1.2
-      - name: shell
+    steps:   
+      - name: Read file content
+        id: read_file
         run: |
-          echo "Hi my name is shaif"
-          touch file1.txt
-          
-        
+          echo "${{ env.slack_message}}" >> data.txt 
+          echo -e "fileName=data.txt" >> $GITHUB_OUTPUT 
+          echo " this is the data which we need to send" ${{ steps.read_file.outputs.fileName }} 
+
+      - name: file content      
+        run: |          
+          echo " this is the data which we need to send" ${{ steps.read_file.outputs.fileName }}          
+
+      # - name: Post to a Slack channel
+      #   uses: peter-evans/slack-file-upload@v2.4.0
+      #   with:
+      #     channel-id: C05NNTPRZC7
+      #     SLACK_BOT_TOKEN: ${{ secrets.RELEASE_TRAIN_SLACK_BOT_TOKEN }}          
+      #     file_path: "${{ steps.read_file.outputs.fileName }}"
+      #     initial_comment: "Here is the file you requested!"
+
+      - name: Post to a Slack channel  
+        uses: MeilCli/slack-upload-file@v3
+        with:
+          slack_token: ${{ secrets.RELEASE_TRAIN_SLACK_BOT_TOKEN }}
+          channel_id: C05NNTPRZC7
+          file_path: "${{ steps.read_file.outputs.fileName }}"
+          file_name: 'data.txt' 
+          initial_comment: 'post by slack-upload-file'
+
+          # payload: |
+          #   {
+          #     "text": "Here is the file you requested!",
+          #     "files": [
+          #       {
+          #         "content": "${{ steps.read_file.outputs.fileName }}",
+          #         "filename": "data.txt",
+          #         "filetype": "text",
+          #         "title": "DATA"
+          #       }
+          #     ]
+          #   }          
+          # payload-file-path: "${{ steps.read_file.outputs.fileName }}" 
+          # text: ${{ steps.read_file.outputs.fileName }}
+        # env:
+        #   SLACK_BOT_TOKEN: ${{ secrets.RELEASE_TRAIN_SLACK_BOT_TOKEN }}
