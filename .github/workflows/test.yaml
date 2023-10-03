@@ -9,17 +9,24 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-    steps:   
+    steps: 
+      - name: Checkout
+        uses: actions/checkout@v1
       - name: Read file content
         id: read_file
         run: |
           echo "${{ env.slack_message}}" >> data.txt 
-          echo -e "fileName=data.txt" >> $GITHUB_OUTPUT 
-          echo " this is the data which we need to send" ${{ steps.read_file.outputs.fileName }} 
-
+          echo -e "fileName=data.txt" >> $GITHUB_OUTPUT          
       - name: file content      
         run: |          
-          echo " this is the data which we need to send" ${{ steps.read_file.outputs.fileName }}          
+          echo " this is the data which we need to send \n" ${{ steps.read_file.outputs.fileName }} 
+
+      - name: Upload to slack step
+        uses: adrey/slack-file-upload-action@master
+        with:
+          token: ${{ secrets.SLACK_BOT_TOKEN }}
+          path: data.txt
+          channel: C05U7HVABUM
 
       # - name: Post to a Slack channel
       #   uses: peter-evans/slack-file-upload@v2.4.0
@@ -29,14 +36,14 @@ jobs:
       #     file_path: "${{ steps.read_file.outputs.fileName }}"
       #     initial_comment: "Here is the file you requested!"
 
-      - name: Post to a Slack channel  
-        uses: MeilCli/slack-upload-file@v3
-        with:
-          slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
-          channel_id: C05U7HVABUM
-          file_path: "${{ steps.read_file.outputs.fileName }}"
-          file_name: 'data.txt' 
-          initial_comment: 'post by slack-upload-file'
+      # - name: Post to a Slack channel  
+      #   uses: MeilCli/slack-upload-file@v3
+      #   with:
+      #     slack_token: ${{ secrets.SLACK_BOT_TOKEN }}
+      #     channel_id: C05U7HVABUM
+      #     file_path: "${{ steps.read_file.outputs.fileName }}"
+      #     file_name: 'data.txt' 
+      #     initial_comment: 'post by slack-upload-file'
 
           # payload: |
           #   {
@@ -54,3 +61,5 @@ jobs:
           # text: ${{ steps.read_file.outputs.fileName }}
         # env:
         #   SLACK_BOT_TOKEN: ${{ secrets.RELEASE_TRAIN_SLACK_BOT_TOKEN }}
+
+    
