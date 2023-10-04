@@ -17,7 +17,9 @@ jobs:
         run: |
           echo "${{ env.slack_message}}" >> data.txt         
           lines=$(wc -l < data.txt)
+          echo "$lines lines"
           echo -e "fileName=lines" >> $GITHUB_OUTPUT
+          echo "$fileName fileName"
       
 
       - name: Upload to slack step
