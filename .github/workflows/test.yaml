@@ -15,18 +15,39 @@ jobs:
       - name: Read file content
         id: read_file
         run: |
-          echo "${{ env.slack_message}}" >> data.txt 
-          echo -e "fileName=data.txt" >> $GITHUB_OUTPUT          
-      - name: file content      
-        run: |          
-          cat ${{ steps.read_file.outputs.fileName }} 
+          echo "${{ env.slack_message}}" >> data.txt         
+          lines=$(wc -l < data.txt)
+          echo -e "fileName=lines" >> $GITHUB_OUTPUT
+      
 
       - name: Upload to slack step
+        if: ${{ steps.read_file.outputs.fileName > 2 }}
         uses: adrey/slack-file-upload-action@master
         with:
           token: ${{ secrets.SLACK_BOT_TOKEN }}
           path: data.txt
           channel: C05U7HVABUM
+
+      - name: Post to a Slack channel
+        if:  ${{ steps.read_file.outputs.fileName < 2 }}        
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          channel-id: C05U7HVABUM
+          payload: |
+            {
+              "text": "Response from GroupSet action:",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "No group available"
+                  }
+                }
+              ]
+            }
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
 
       # - name: Post to a Slack channel
       #   uses: peter-evans/slack-file-upload@v2.4.0
