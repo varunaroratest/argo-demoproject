@@ -5,7 +5,7 @@ on:
 
 env:
   slack_message: "Read GroupSet output:\nBelow components have groupset group-one"
-  channel: "C05U7HVABUM"
+  channel: ""
 
 jobs:
   build:
