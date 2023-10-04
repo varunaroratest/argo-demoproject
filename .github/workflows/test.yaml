@@ -5,6 +5,7 @@ on:
 
 env:
   slack_message: "Read GroupSet output:\nBelow components have groupset group-one"
+  channel: "C05U7HVABUM"
 
 jobs:
   build:
@@ -23,18 +24,18 @@ jobs:
       
 
       - name: Upload to slack step
-        if: ${{ steps.read_file.outputs.fileName > 2 }}
+        if: ${{ always() && env.channel != '' && steps.read_file.outputs.fileLine > 2 }}
         uses: adrey/slack-file-upload-action@master
         with:
           token: ${{ secrets.SLACK_BOT_TOKEN }}
           path: data.txt
-          channel: C05U7HVABUM
+          channel: "${{env.channel}}"
 
       - name: Post to a Slack channel
-        if:  ${{ steps.read_file.outputs.fileName < 3 }}        
+        if: ${{ always() && env.channel != '' && steps.read_file.outputs.fileLine < 3 }}        
         uses: slackapi/slack-github-action@v1.23.0
         with:
-          channel-id: C05U7HVABUM
+          channel-id: "${{env.channel}}"
           payload: |
             {
               "text": "Response from GroupSet action:",
