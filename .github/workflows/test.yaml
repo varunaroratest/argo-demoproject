@@ -31,7 +31,7 @@ jobs:
           channel: C05U7HVABUM
 
       - name: Post to a Slack channel
-        if:  ${{ steps.read_file.outputs.fileName < 2 }}        
+        if:  ${{ steps.read_file.outputs.fileName < 3 }}        
         uses: slackapi/slack-github-action@v1.23.0
         with:
           channel-id: C05U7HVABUM
